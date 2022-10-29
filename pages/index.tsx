@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import {FacebookLogo, TwitterLogo, InstagramLogo, LinkedinLogo, EnvelopeOpen} from 'phosphor-react';
 
-import FelipePhoto from './assets/felipe.jpg';
+import FelipePhoto from '../src/assets/felipe.jpg';
 import Callout from '../src/components/Disclosure';
 
 export default function Home() {
