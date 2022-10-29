@@ -9,12 +9,12 @@ export default function Home() {
     <>
       <div className="h-screen flex items-center justify-center">
       <div className="w-5/6 lg:w-1/2">
-        <header className="flex flex-col items-center my-8">
+        <section className="flex flex-col items-center my-8">
           <Image className="w-32 h-32 rounded-full border-4 border-textBase" src={FelipePhoto} alt="Foto de Felipe Lima" />
           <h1 className="text-4xl text-primaryColor font-titles text-center">Felipe Lima</h1>
           <span className="text-xl">@mrfelipelima</span>
           <span className="text-center">Web Engineer</span>
-        </header>
+        </section>
         <Callout />
         <div className="flex flex-col items-center text-center my-8">
           <ul className="w-full flex flex-col gap-4">
