@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    TagManager.initialize({ gtmId: process.env.GTM_ID })
+    TagManager.initialize({ gtmId: `${process.env.GTM_ID}` })
   }, [])
   return <Component {...pageProps} />
 }
