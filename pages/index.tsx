@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Image from 'next/image';
 import {FacebookLogo, TwitterLogo, InstagramLogo, LinkedinLogo, EnvelopeOpen} from 'phosphor-react';
 
@@ -7,10 +8,14 @@ import Callout from '../src/components/Disclosure';
 export default function Home() {
   return (
     <>
+      <Head>
+        <title>Felipe Lima - Link list</title>
+        <meta name="description" content="Felipe Lima é engenheiro web com habilidades de backend e frontend e nessa página apresenta os principais links para acompanhar seus trabalhos." />
+      </Head>
       <div className="h-screen flex items-center justify-center">
       <div className="w-5/6 lg:w-1/2">
         <section className="flex flex-col items-center my-8">
-          <Image className="w-32 h-32 rounded-full border-4 border-textBase" src={FelipePhoto} alt="Foto de Felipe Lima" />
+          <Image className="w-32 h-32 rounded-full border-4 border-textBase" src={FelipePhoto} alt="Foto de Felipe Cunha Lima" />
           <h1 className="text-4xl text-primaryColor font-titles text-center">Felipe Lima</h1>
           <span className="text-xl">@mrfelipelima</span>
           <span className="text-center">Web Engineer</span>
