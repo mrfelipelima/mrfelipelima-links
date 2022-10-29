@@ -5,6 +5,7 @@ export default function Document() {
     return(
         <Html lang="pt-BR">
             <Head>
+                <link rel="icon" href="/f-icon.svg" />
                 <Script id="google-tag-manager">
                     {`
                     <!-- Google Tag Manager -->
