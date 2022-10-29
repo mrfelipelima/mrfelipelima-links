@@ -1,5 +1,5 @@
 import { Disclosure } from '@headlessui/react'
-import { CaretUp, Quotes } from 'phosphor-react';
+import { CaretUp } from 'phosphor-react';
 import useFetch from '../hooks/useFetch';
 
 type Posts = {
