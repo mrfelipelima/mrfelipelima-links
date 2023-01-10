@@ -1,5 +1,5 @@
 import { Disclosure } from '@headlessui/react'
-import { CaretUp } from 'phosphor-react';
+import { CaretDown } from 'phosphor-react';
 import useFetch from '../hooks/useFetch';
 
 type Posts = {
@@ -32,7 +32,7 @@ export default function Callout() {
             <>
               <Disclosure.Button className="flex w-full h-14 justify-between items-center rounded bg-secondaryShadow2 px-4 py-2 hover:bg-secondaryShadow1 focus:outline-none focus-visible:ring focus-visible:ring-primaryColor focus-visible:ring-opacity-75">
                 <h2>Blog</h2>
-                <CaretUp
+                <CaretDown
                   className={`${
                     open ? 'rotate-180 transform' : ''
                   } h-5 w-5`}
