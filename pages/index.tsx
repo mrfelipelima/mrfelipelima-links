@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Script from 'next/script';
 import { FacebookLogo, TwitterLogo, InstagramLogo, LinkedinLogo, EnvelopeOpen } from 'phosphor-react';
 
 import Callout from '../src/components/Disclosure';
@@ -11,6 +12,18 @@ export default function Home() {
         <title>Felipe Lima - Link list</title>
         <meta name="description" content="Felipe Lima é engenheiro web com habilidades de backend e frontend e nessa página apresenta os principais links para acompanhar seus trabalhos." />
       </Head>
+      <Script id="person-schema" type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "email": "mailto:mrfelipelima@gmail.com",
+          "image": "https://firebasestorage.googleapis.com/v0/b/mrfelipelima-409ed.appspot.com/o/public%2Fimg%2F119681655_3876762852339046_5736681282524451695_n%20(1).jpg?alt=media",
+          "jobTitle": "Web engineer",
+          "name": "Felipe Lima",
+          "telephone": "+55 (91) 99160-8939",
+          "url": "http://www.felipelima.net"
+        })
+      }} />
       <div className="h-screen flex items-center justify-center">
         <div className="w-5/6 lg:w-1/2">
           <section className="flex flex-col items-center my-8">
