@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./pages/**/*.tsx', './src/**/*.tsx'],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     extend: {
       colors: {
@@ -11,12 +15,12 @@ module.exports = {
         secondaryShadow2: '#12013B',
         textWhite: '#cccccc',
         formBackground: '#24221f',
-        primaryColor: '#f20530'
-      }
+        primaryColor: '#f20530',
+      },
     },
     fontFamily: {
-      'titles': ['Poppins', 'sans-serif'],
-      'body': ['Roboto', 'sans-serif']
+      sans: 'var(--font-roboto)',
+      alt: 'var(--font-popins)',
     },
   },
   plugins: [],
