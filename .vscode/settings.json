@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "popins"
-    ]
+    ],
+    "dotenv.enableAutocloaking": false
 }
