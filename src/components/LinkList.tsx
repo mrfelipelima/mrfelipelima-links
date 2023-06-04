@@ -10,6 +10,14 @@ export async function LinkList() {
   const response = await fetch(`${server}/api/v1/links`)
   const links: ILinks[] = await response.json()
 
+  if (links.length === 0) {
+    return (
+      <div className="text-center text-xl">
+        <span>nenhum link encontrado</span>
+      </div>
+    )
+  }
+
   return (
     <div className="my-8 flex flex-col items-center text-center">
       <ul className="flex w-full flex-col gap-4">
