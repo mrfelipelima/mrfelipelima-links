@@ -12,6 +12,7 @@ const popins = Poppins({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.felipelima.net'),
   title: 'Felipe Lima - Link List',
   description:
     'Felipe Lima é engenheiro web com habilidades de backend e frontend e nessa página apresenta os principais links para acompanhar seus trabalhos.',
