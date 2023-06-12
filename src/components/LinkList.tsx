@@ -8,6 +8,13 @@ interface ILinks {
 
 export async function LinkList() {
   const response = await fetch(`${server}/api/v1/links`)
+  if (!response || !response.ok) {
+    return(
+      <div className="text-center text-xl">
+        <span>nenhum link encontrado</span>
+      </div>
+    )
+  }
   const links: ILinks[] = await response.json()
 
   if (links.length === 0) {
