@@ -1,24 +1,51 @@
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
-import { NextRequest, NextResponse } from "next/server";
+import { collection, getDocs } from 'firebase/firestore'
+import { NextResponse } from 'next/server'
 
-import { firebaseApp } from "@/lib/firebase";
-import { z } from "zod";
+import { db } from '@/lib/firebase'
 
-const db = getFirestore(firebaseApp)
+type Links = {
+  id: string
+  title: string
+  url: string
+}
 
-export async function POST(request:NextRequest) {
-  const data = await request.json()
+export async function GET() {
+  const querySnapshot = await getDocs(collection(db, 'links'))
 
-  const linkScheme = z.object({
-    title: z.string(),
-    url: z.string().url(),
+  const links: Links[] = []
+
+  querySnapshot.forEach((doc) => {
+    links.push({
+      id: doc.id,
+      title: doc.get('title'),
+      url: doc.get('url'),
+    })
   })
 
-  const link = linkScheme.parse(data)
-
-  const linkRef = await addDoc(collection(db, 'links'), link)
-
-  return NextResponse.json({
-    documentId: linkRef.id,
+  return NextResponse.json(links, {
+    status: 200,
   })
 }
+
+// export async function POST(request: NextRequest) {
+//   const data = await request.json()
+
+//   const linkScheme = z.object({
+//     title: z.string(),
+//     url: z.string().url(),
+//   })
+
+//   const link = linkScheme.parse(data)
+
+//   const linkRef = await addDoc(collection(db, 'links'), link)
+
+//   const response = {
+//     id: linkRef.id,
+//     title: link.title,
+//     url: link.url,
+//   }
+
+//   return NextResponse.json(response, {
+//     status: 201,
+//   })
+// }
