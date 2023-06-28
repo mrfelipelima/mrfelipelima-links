@@ -8,20 +8,27 @@ interface ILinks {
   url: string
 }
 
-const links: ILinks[] = []
+async function getLinkList() {
+  const links: ILinks[] = []
 
-getDocs(collection(db, 'links')).then((docs) => {
-  docs.forEach((doc) => {
+  const documentQuery = await getDocs(collection(db, 'links'))
+
+  documentQuery.forEach((doc) => {
     links.push({
       id: doc.id,
       title: doc.get('title'),
       url: doc.get('url'),
     })
   })
-})
+
+  return links
+}
 
 
-export function LinkList() {
+export async function LinkList() {
+
+  const links = await getLinkList()
+
   if (links.length === 0) {
     return (
       <div className="text-center text-xl">
