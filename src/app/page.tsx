@@ -39,7 +39,6 @@ export default function Home() {
       <div className="flex h-screen items-center justify-center">
         <div className="w-5/6 lg:w-1/2">
           <Header />
-          {/* @ts-expect-error Async Server Component */}
           <LinkList />
           <SocialIcons />
         </div>

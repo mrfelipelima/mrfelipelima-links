@@ -1,8 +1,7 @@
-import { addDoc, collection, getDocs } from 'firebase/firestore'
-import { NextRequest, NextResponse } from 'next/server'
+import { collection, getDocs } from 'firebase/firestore'
+import { NextResponse } from 'next/server'
 
 import { db } from '@/lib/firebase'
-import { z } from 'zod'
 
 type Links = {
   id: string
@@ -28,25 +27,25 @@ export async function GET() {
   })
 }
 
-export async function POST(request: NextRequest) {
-  const data = await request.json()
+// export async function POST(request: NextRequest) {
+//   const data = await request.json()
 
-  const linkScheme = z.object({
-    title: z.string(),
-    url: z.string().url(),
-  })
+//   const linkScheme = z.object({
+//     title: z.string(),
+//     url: z.string().url(),
+//   })
 
-  const link = linkScheme.parse(data)
+//   const link = linkScheme.parse(data)
 
-  const linkRef = await addDoc(collection(db, 'links'), link)
+//   const linkRef = await addDoc(collection(db, 'links'), link)
 
-  const response = {
-    id: linkRef.id,
-    title: link.title,
-    url: link.url,
-  }
+//   const response = {
+//     id: linkRef.id,
+//     title: link.title,
+//     url: link.url,
+//   }
 
-  return NextResponse.json(response, {
-    status: 201,
-  })
-}
+//   return NextResponse.json(response, {
+//     status: 201,
+//   })
+// }
