@@ -1,11 +1,11 @@
-import { db } from '@/lib/firebase'
-import { collection, getDocs } from 'firebase/firestore'
-import { Suspense } from 'react'
+import { db } from '@/lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { Suspense } from 'react';
 
 interface ILinks {
-  id: string
-  title: string
-  url: string
+  id: string;
+  title: string;
+  url: string;
 }
 
 async function getLinkList() {
@@ -24,6 +24,7 @@ async function getLinkList() {
   return links
 }
 
+export const revalidate = 60;
 
 export async function LinkList() {
 
