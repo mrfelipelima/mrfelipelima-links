@@ -60,7 +60,7 @@ export async function LinkList() {
   const response = await notionApi.post(`/databases/${databaseId}/query`, {
     sorts: [
       {
-        property: 'id',
+        property: 'position',
         direction: 'ascending'
       }
     ]
