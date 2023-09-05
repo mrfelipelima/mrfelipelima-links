@@ -32,6 +32,9 @@ const linksSchema = z.object({
         select: z.object({
           name: z.enum(['on', 'off'])
         })
+      }),
+      position: z.object({
+        number: z.number()
       })
     })
   })).transform(
@@ -44,6 +47,7 @@ const linksSchema = z.object({
           description: results.properties.description.rich_text[0].text.content,
           clicks: results.properties.clicks.number,
           visibility: results.properties.visibility.select.name,
+          position: results.properties.position,
         }
       })
     }
