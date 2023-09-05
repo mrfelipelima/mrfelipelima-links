@@ -1,7 +1,8 @@
-import { Metadata } from 'next'
-import { Poppins, Roboto_Flex as Roboto } from 'next/font/google'
-import { ReactNode } from 'react'
-import './globals.css'
+import { Analytics } from '@vercel/analytics/react';
+import { Metadata } from 'next';
+import { Poppins, Roboto_Flex as Roboto } from 'next/font/google';
+import { ReactNode } from 'react';
+import './globals.css';
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`${roboto.variable} ${popins.variable} bg-secondary font-sans text-gray-100`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   )
