@@ -74,13 +74,15 @@ export async function LinkList() {
       <Suspense fallback={<span>Carregando..</span>}>
         <ul className="flex w-full flex-col gap-4">
           {results.map((link) => {
-            return (
-              <a href={link.url} key={link.id}>
-                <li className="flex h-14 w-full items-center justify-center rounded bg-secondaryShadow2 duration-300 hover:bg-secondaryShadow1 focus:outline-none focus-visible:ring focus-visible:ring-primaryColor focus-visible:ring-opacity-75">
-                  {link.title}
-                </li>
-              </a>
-            )
+            if(link.visibility === 'on') {
+              return (
+                <a href={link.url} key={link.id}>
+                  <li className="flex h-14 w-full items-center justify-center rounded bg-secondaryShadow2 duration-300 hover:bg-secondaryShadow1 focus:outline-none focus-visible:ring focus-visible:ring-primaryColor focus-visible:ring-opacity-75">
+                    {link.title}
+                  </li>
+                </a>
+              )
+            }
           })}
         </ul>
       </Suspense>
