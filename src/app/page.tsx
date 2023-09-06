@@ -4,11 +4,10 @@ import { Person, WithContext } from 'schema-dts'
 import { z } from 'zod'
 
 import { SocialIcons } from '@/components/SocialIcons'
-import { notionApi } from '@/lib/api'
 
 import felipeLima from '@/assets/felipe.jpg'
 import { db } from '@/lib/firebase'
-import { doc, getDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 
 export const metadata: Metadata = {
   openGraph: {
@@ -38,77 +37,41 @@ const profileSchema = z.object({
   about: z.string()
 })
 
-const linksSchema = z.object({
-  results: z.array(z.object({
-    id: z.string(),
-    properties: z.object({
-      description: z.object({
-        rich_text: z.array(z.object({
-          text: z.object({
-            content: z.string(),
-          })
-        }))
-      }),
-      clicks: z.object({
-        number: z.number().nullable()
-      }),
-      title: z.object({
-        title: z.array(z.object({
-          text: z.object({
-            content: z.string()
-          })
-        }))
-      }),
-      url: z.object({
-        url: z.string().url(),
-      }),
-      visibility: z.object({
-        select: z.object({
-          name: z.enum(['on', 'off'])
-        })
-      }),
-      position: z.object({
-        number: z.number()
-      })
-    })
-  })).transform(
-    results => {
-      return results.map(results => {
-        return {
-          id: results.id,
-          title: results.properties.title.title[0].text.content,
-          url: results.properties.url.url,
-          description: results.properties.description.rich_text[0].text.content,
-          clicks: results.properties.clicks.number,
-          visibility: results.properties.visibility.select.name,
-          position: results.properties.position,
-        }
-      })
-    }
-  )
-})
+const linksSchema = z.array(z.object({
+  id: z.string(),
+  title: z.string(),
+  url: z.string().url(),
+  position: z.number().default(0),
+  description: z.string().default(""),
+  clicks: z.number().default(0)
+}))
+
+type LinksSchema = z.infer<typeof linksSchema>
 
 export const revalidate = 60
 
 export default async function Home() {
 
-  const databaseId = process.env.NOTION_DATABASE_ID
-
-  const response = await notionApi.post(`/databases/${databaseId}/query`, {
-    sorts: [
-      {
-        property: 'position',
-        direction: 'ascending'
-      }
-    ]
-  })
-
-  const { results } = linksSchema.parse(response.data)
-
   const docRef = doc(db, "configurations", "profile");
   const docSnapshot = await getDoc(docRef);
 
   const { name, tagline, about } = profileSchema.parse(docSnapshot.data())
+
+  const linksRef = query(collection(db, "links"), where("visibility", "==", true))
+  const linksSnapshot = await getDocs(linksRef)
+
+  let links: LinksSchema = []
+
+  linksSnapshot.forEach(doc => {
+    links.push({
+      id: doc.id,
+      title: doc.get("title"),
+      url: doc.get("url"),
+      clicks: doc.get("clicks"),
+      description: doc.get("description"),
+      position: doc.get("position"),
+    })
+  })
 
   return (
     <>
@@ -137,16 +100,14 @@ export default async function Home() {
           </div>
           <div className="my-8 flex flex-col items-center text-center">
             <ul className="flex w-full flex-col gap-4">
-              {results.map((link) => {
-                if (link.visibility === 'on') {
-                  return (
-                    <a href={link.url} key={link.id}>
-                      <li className="flex h-14 w-full items-center justify-center rounded bg-secondaryShadow2 duration-300 hover:bg-secondaryShadow1 focus:outline-none focus-visible:ring focus-visible:ring-primaryColor focus-visible:ring-opacity-75">
-                        {link.title}
-                      </li>
-                    </a>
-                  )
-                }
+              {links.map((link) => {
+                return (
+                  <a href={link.url} key={link.id}>
+                    <li className="flex h-14 w-full items-center justify-center rounded bg-secondaryShadow2 duration-300 hover:bg-secondaryShadow1 focus:outline-none focus-visible:ring focus-visible:ring-primaryColor focus-visible:ring-opacity-75">
+                      {link.title}
+                    </li>
+                  </a>
+                )
               })}
             </ul>
           </div>
