@@ -1,4 +1,6 @@
+import { app } from '@/lib/firebase';
 import { Analytics } from '@vercel/analytics/react';
+import { getAnalytics, isSupported } from "firebase/analytics";
 import { Metadata } from 'next';
 import { Poppins, Roboto_Flex as Roboto } from 'next/font/google';
 import { ReactNode } from 'react';
@@ -18,6 +20,12 @@ export const metadata: Metadata = {
   description:
     'Felipe Lima é engenheiro web com habilidades de backend e frontend e nessa página apresenta os principais links para acompanhar seus trabalhos.',
 }
+
+isSupported().then(res => {
+  if(res) {
+    const analytics = getAnalytics(app)
+  }
+})
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
