@@ -1,17 +1,11 @@
 import { FirebaseAnalytics } from '@/components/FirebaseAnalytics';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
-import { Poppins, Roboto_Flex as Roboto } from 'next/font/google';
+import { Roboto_Flex as Roboto } from 'next/font/google';
 import { ReactNode } from 'react';
 import './globals.css';
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
-
-const popins = Poppins({
-  subsets: ['latin'],
-  weight: '600',
-  variable: '--font-poppins',
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.felipelima.net'),
@@ -51,7 +45,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-br">
       <body
-        className={`${roboto.variable} ${popins.variable} bg-secondary font-sans text-gray-100`}
+        className={`${roboto.variable} bg-framboesa-50 dark:bg-indigoDark-500 font-sans text-indigoDark-900 dark:text-framboesa-50`}
       >
         <FirebaseAnalytics>
           {children}

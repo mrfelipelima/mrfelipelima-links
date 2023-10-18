@@ -1,12 +1,20 @@
-import Image from 'next/image'
-import { Person, WithContext } from 'schema-dts'
-import { z } from 'zod'
+import { Poppins } from 'next/font/google';
+import Image from 'next/image';
+import { Person, WithContext } from 'schema-dts';
+import { z } from 'zod';
 
-import { SocialIcons } from '@/components/SocialIcons'
+import { SocialIcons } from '@/components/SocialIcons';
 
-import felipeLima from '@/assets/felipe.jpg'
-import { db } from '@/lib/firebase'
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
+import felipeLima from '@/assets/felipe.jpg';
+import LinkButton from '@/components/LinkButton';
+import { db } from '@/lib/firebase';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+
+const popins = Poppins({
+  subsets: ['latin'],
+  weight: ['200', '300'],
+  variable: '--font-poppins',
+})
 
 const person: WithContext<Person> = {
   '@context': 'https://schema.org',
@@ -70,37 +78,31 @@ export default async function Home() {
         }}
       />
 
-      <div className="flex h-screen items-center justify-center">
-        <div className="w-5/6 lg:w-1/2">
-          <div className="my-8 flex flex-col items-center">
+      <div className="px-6 py-4 flex flex-col gap-6 h-screen items-center justify-center">
+        <div className="md:w-1/2 flex flex-col items-center justify-center gap-6">
+          <header className="flex flex-col items-center gap-4">
             <Image
-              className="h-32 w-32 rounded-full border-4 border-textBase"
+              className="h-[12.1875rem] w-[12.1875rem] rounded-full border-4 border-framboesa-500"
               src={felipeLima}
               width="144"
               height="144"
               alt="Foto de Felipe Lima"
             />
-            <h1 className="font-titles text-center font-alt text-4xl text-primaryColor">
+            <h1 className={`${popins.className} text-center font-alt text-5xl text-framboesa-500 leading-10`}>
               {name}
             </h1>
-            <span className="text-xl">{tagline}</span>
-            <span className="text-center">{about}</span>
-          </div>
-          <div className="my-8 flex flex-col items-center text-center">
-            <ul className="flex w-full flex-col gap-4">
+            <span className={`text-xl ${popins.className}`}>{tagline}</span>
+            <span className="text-center text-base">{about}</span>
+          </header>
+          <div className="flex flex-col items-center gap-4 w-full">
               {links.map((link) => {
                 return (
-                  <a href={link.url} key={link.id}>
-                    <li className="flex h-14 w-full items-center justify-center rounded bg-secondaryShadow2 duration-300 hover:bg-secondaryShadow1 focus:outline-none focus-visible:ring focus-visible:ring-primaryColor focus-visible:ring-opacity-75">
-                      {link.title}
-                    </li>
-                  </a>
+                  <LinkButton key={link.id} title={link.title} url={link.url} />
                 )
               })}
-            </ul>
           </div>
           <SocialIcons />
-        </div>
+          </div>
       </div>
     </>
   )
