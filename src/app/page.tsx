@@ -1,4 +1,3 @@
-import { Metadata } from 'next'
 import Image from 'next/image'
 import { Person, WithContext } from 'schema-dts'
 import { z } from 'zod'
@@ -8,17 +7,6 @@ import { SocialIcons } from '@/components/SocialIcons'
 import felipeLima from '@/assets/felipe.jpg'
 import { db } from '@/lib/firebase'
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
-
-export const metadata: Metadata = {
-  openGraph: {
-    type: 'profile',
-    emails: 'mrfelipelima@gmail.com',
-    firstName: 'Felipe',
-    lastName: 'Lima',
-    siteName: 'Felipe Lima',
-    username: 'MrFelipeLima',
-  },
-}
 
 const person: WithContext<Person> = {
   '@context': 'https://schema.org',

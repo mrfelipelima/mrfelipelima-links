@@ -1,6 +1,5 @@
-import { app } from '@/lib/firebase';
+import { FirebaseAnalytics } from '@/components/FirebaseAnalytics';
 import { Analytics } from '@vercel/analytics/react';
-import { getAnalytics, isSupported } from "firebase/analytics";
 import { Metadata } from 'next';
 import { Poppins, Roboto_Flex as Roboto } from 'next/font/google';
 import { ReactNode } from 'react';
@@ -16,16 +15,37 @@ const popins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.felipelima.net'),
-  title: 'Felipe Lima - Link List',
+  title: {
+    default: 'Felipe Lima',
+    template: '%s | Felipe Lima'
+  },
   description:
     'Felipe Lima é engenheiro web com habilidades de backend e frontend e nessa página apresenta os principais links para acompanhar seus trabalhos.',
+  openGraph: {
+    title: 'Felipe Lima',
+    description:
+    'Felipe Lima é engenheiro web com habilidades de backend e frontend e nessa página apresenta os principais links para acompanhar seus trabalhos.',
+    url: 'https://www.felipelima.net',
+    siteName: 'Felipe Lima',
+    locale: 'pt_BR',
+    type: 'website'
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  twitter: {
+    title: 'Felipe Lima',
+    card: 'summary_large_image',
+  },
 }
-
-isSupported().then(res => {
-  if(res) {
-    const analytics = getAnalytics(app)
-  }
-})
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -33,7 +53,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body
         className={`${roboto.variable} ${popins.variable} bg-secondary font-sans text-gray-100`}
       >
-        {children}
+        <FirebaseAnalytics>
+          {children}
+        </FirebaseAnalytics>
         <Analytics />
       </body>
     </html>
