@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-br">
       <body
-        className={`${roboto.variable} ${popins.variable} bg-secondary font-sans text-gray-100`}
+        className={`${roboto.className} bg-secondary font-sans text-gray-100`}
       >
         <FirebaseAnalytics>
           {children}

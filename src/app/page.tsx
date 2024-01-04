@@ -4,7 +4,6 @@ import { z } from 'zod'
 
 import { SocialIcons } from '@/components/SocialIcons'
 
-import felipeLima from '@/assets/felipe.jpg'
 import { db } from '@/lib/firebase'
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 
@@ -75,10 +74,11 @@ export default async function Home() {
           <div className="my-8 flex flex-col items-center">
             <Image
               className="h-32 w-32 rounded-full border-4 border-textBase"
-              src={felipeLima}
+              src="https://github.com/mrfelipelima.png"
               width="144"
               height="144"
               alt="Foto de Felipe Lima"
+              priority={true}
             />
             <h1 className="font-titles text-center font-alt text-4xl text-primaryColor">
               {name}
