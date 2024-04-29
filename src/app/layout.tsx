@@ -1,4 +1,5 @@
 import { FirebaseAnalytics } from '@/components/FirebaseAnalytics';
+import { cn } from '@/lib/cn';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
 import { Poppins, Roboto_Flex as Roboto } from 'next/font/google';
@@ -7,9 +8,9 @@ import './globals.css';
 
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
 
-const popins = Poppins({
+const poppins = Poppins({
   subsets: ['latin'],
-  weight: '600',
+  weight: ['200', '300'],
   variable: '--font-poppins',
 })
 
@@ -51,7 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-br">
       <body
-        className={`${roboto.className} bg-secondary font-sans text-gray-100`}
+        className={cn(poppins.className, 'bg-zinc-100 dark:bg-indigoDark-500 font-sans text-indigoDark-900 dark:text-framboesa-50')}
       >
         <FirebaseAnalytics>
           {children}

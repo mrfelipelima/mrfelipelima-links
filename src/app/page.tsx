@@ -1,11 +1,13 @@
-import Image from 'next/image'
-import { Person, WithContext } from 'schema-dts'
-import { z } from 'zod'
+import Image from 'next/image';
+import { Person, WithContext } from 'schema-dts';
+import { z } from 'zod';
 
-import { SocialIcons } from '@/components/SocialIcons'
+import { SocialIcons } from '@/components/SocialIcons';
 
-import { db } from '@/lib/firebase'
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
+import felipeLima from '@/assets/felipe.jpg';
+import LinkButton from '@/components/LinkButton';
+import { db } from '@/lib/firebase';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 
 const person: WithContext<Person> = {
   '@context': 'https://schema.org',
@@ -27,10 +29,8 @@ const profileSchema = z.object({
 const linksSchema = z.array(z.object({
   id: z.string(),
   title: z.string(),
-  url: z.string().url(),
   position: z.number().default(0),
   description: z.string().default(""),
-  clicks: z.number().default(0)
 }))
 
 type LinksSchema = z.infer<typeof linksSchema>
@@ -53,8 +53,6 @@ export default async function Home() {
     links.push({
       id: doc.id,
       title: doc.get("title"),
-      url: doc.get("url"),
-      clicks: doc.get("clicks"),
       description: doc.get("description"),
       position: doc.get("position"),
     })
@@ -69,36 +67,32 @@ export default async function Home() {
         }}
       />
 
-      <div className="flex h-screen items-center justify-center">
-        <div className="w-5/6 lg:w-1/2">
-          <div className="my-8 flex flex-col items-center">
+      <div className="px-6 py-4 flex flex-col gap-6 h-screen items-center justify-center">
+        <div className="md:w-1/2 flex flex-col items-center justify-center gap-6">
+          <header className="flex flex-col items-center gap-4">
             <Image
-              className="h-32 w-32 rounded-full border-4 border-textBase"
-              src="https://github.com/mrfelipelima.png"
+              className="w-32 h-32 rounded-full border-2 border-framboesa-500"
+              src={felipeLima}
               width="144"
               height="144"
               alt="Foto de Felipe Lima"
-              priority={true}
+              priority
             />
-            <h1 className="font-titles text-center font-alt text-4xl text-primaryColor">
+            <h1 className="text-center font-alt text-3xl text-framboesa-500 leading-10">
               {name}
             </h1>
             <span className="text-xl">{tagline}</span>
-            <span className="text-center">{about}</span>
-          </div>
-          <div className="my-8 flex flex-col items-center text-center">
-            <ul className="flex w-full flex-col gap-4">
+            <span className="text-center text-base">{about}</span>
+          </header>
+          <nav className="w-full">
+            <ul className="flex flex-col items-center gap-4 w-full">
               {links.map((link) => {
-                return (
-                  <a href={link.url} key={link.id}>
-                    <li className="flex h-14 w-full items-center justify-center rounded bg-secondaryShadow2 duration-300 hover:bg-secondaryShadow1 focus:outline-none focus-visible:ring focus-visible:ring-primaryColor focus-visible:ring-opacity-75">
-                      {link.title}
-                    </li>
-                  </a>
+                return (        
+                  <LinkButton key={link.id} title={link.title} id={link.id} />
                 )
               })}
             </ul>
-          </div>
+          </nav>
           <SocialIcons />
         </div>
       </div>
