@@ -42,10 +42,6 @@ module.exports = {
         }
       },
     },
-    fontFamily: {
-      sans: 'var(--font-roboto)',
-      titles: 'var(--font-popins)',
-    },
   },
   plugins: [],
 }

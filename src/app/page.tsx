@@ -1,4 +1,3 @@
-import { Poppins } from 'next/font/google';
 import Image from 'next/image';
 import { Person, WithContext } from 'schema-dts';
 import { z } from 'zod';
@@ -9,12 +8,6 @@ import felipeLima from '@/assets/felipe.jpg';
 import LinkButton from '@/components/LinkButton';
 import { db } from '@/lib/firebase';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
-
-const popins = Poppins({
-  subsets: ['latin'],
-  weight: ['200', '300'],
-  variable: '--font-poppins',
-})
 
 const person: WithContext<Person> = {
   '@context': 'https://schema.org',
@@ -36,10 +29,8 @@ const profileSchema = z.object({
 const linksSchema = z.array(z.object({
   id: z.string(),
   title: z.string(),
-  url: z.string().url(),
   position: z.number().default(0),
   description: z.string().default(""),
-  clicks: z.number().default(0)
 }))
 
 type LinksSchema = z.infer<typeof linksSchema>
@@ -62,8 +53,6 @@ export default async function Home() {
     links.push({
       id: doc.id,
       title: doc.get("title"),
-      url: doc.get("url"),
-      clicks: doc.get("clicks"),
       description: doc.get("description"),
       position: doc.get("position"),
     })
@@ -82,27 +71,30 @@ export default async function Home() {
         <div className="md:w-1/2 flex flex-col items-center justify-center gap-6">
           <header className="flex flex-col items-center gap-4">
             <Image
-              className="h-[12.1875rem] w-[12.1875rem] rounded-full border-4 border-framboesa-500"
+              className="w-32 h-32 rounded-full border-2 border-framboesa-500"
               src={felipeLima}
               width="144"
               height="144"
               alt="Foto de Felipe Lima"
+              priority
             />
-            <h1 className={`${popins.className} text-center font-alt text-5xl text-framboesa-500 leading-10`}>
+            <h1 className="text-center font-alt text-3xl text-framboesa-500 leading-10">
               {name}
             </h1>
-            <span className={`text-xl ${popins.className}`}>{tagline}</span>
+            <span className="text-xl">{tagline}</span>
             <span className="text-center text-base">{about}</span>
           </header>
-          <div className="flex flex-col items-center gap-4 w-full">
+          <nav className="w-full">
+            <ul className="flex flex-col items-center gap-4 w-full">
               {links.map((link) => {
-                return (
-                  <LinkButton key={link.id} title={link.title} url={link.url} />
+                return (        
+                  <LinkButton key={link.id} title={link.title} id={link.id} />
                 )
               })}
-          </div>
+            </ul>
+          </nav>
           <SocialIcons />
-          </div>
+        </div>
       </div>
     </>
   )

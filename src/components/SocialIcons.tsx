@@ -5,7 +5,8 @@ export function SocialIcons() {
     <div className="w-full text-framboesa-500">
       <ul className="flex justify-center gap-6">
         <li>
-          <a href="https://www.facebook.com/MrFelipeLima">
+          <a title="Facebook" href="https://www.facebook.com/MrFelipeLima">
+            <p className="sr-only">Facebook</p>
             <FacebookIcon
               size={24}
               className="duration-300 hover:text-framboesa-800"
@@ -13,23 +14,27 @@ export function SocialIcons() {
           </a>
         </li>
         <li>
-          <a href="https://twitter.com/mrfelipelima">
+          <a title="Twitter" href="https://twitter.com/mrfelipelima">
             <Twitter size={24} className="duration-300 hover:text-framboesa-800" />
+            <p className="sr-only">Twitter</p>
           </a>
         </li>
         <li>
-          <a href="https://instagram.com/mrfelipelima">
+          <a title="Instagram" href="https://instagram.com/mrfelipelima">
             <Instagram size={24} className="duration-300 hover:text-framboesa-800" />
+            <p className="sr-only">Instagram</p>
           </a>
         </li>
         <li>
-          <a href="https://www.linkedin.com/in/mrfelipelima">
+          <a title="LinkedIn" href="https://www.linkedin.com/in/mrfelipelima">
             <Linkedin size={24} className="duration-300 hover:text-framboesa-800" />
+            <p className="sr-only">Linkedin</p>
           </a>
         </li>
         <li>
-          <a href="mailto:eu@felipelima.net">
+          <a title="Email" href="mailto:eu@felipelima.net">
             <Mail size={24} className="duration-300 hover:text-framboesa-800" />
+            <p className="sr-only">E-mail</p>
           </a>
         </li>
       </ul>
