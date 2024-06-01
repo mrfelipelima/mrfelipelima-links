@@ -1,0 +1,98 @@
+.article {
+  text-align: justify;
+}
+
+.article p + p {
+  margin-top: 1rem;
+}
+
+.article a {
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+  color: #de2f5c;
+}
+
+.article a:hover {
+  text-decoration-style: dashed;
+}
+
+.article figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  gap: 0.25rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
+}
+
+.article figure figcaption {
+  font-style: italic;
+}
+
+.article h2 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  margin: 1.5rem 0;
+}
+
+.article pre {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #665f6c;
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: #0b070f;
+  margin: 1rem 0;
+}
+
+@media (prefers-color-scheme: light) {
+  .article pre {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #665f6c;
+    border-radius: 1rem;
+    padding: 1rem;
+    background-color: #e4e4e7;
+    margin: 1rem 0;
+  }
+}
+
+.article pre code {
+  display: block;
+  background: none;
+  white-space: pre;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  max-width: 100%;
+  min-width: 100px;
+  padding: 0;
+}
+
+.article .embed-youtube {
+  aspect-ratio: 16 / 9;
+}
+
+.article hr {
+  margin: 2rem 0;
+}
+
+.article ul {
+  list-style-type: disc;
+  text-align: left;
+}
+
+.article table {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.article table thead {
+  border-bottom: 2px solid #9e2141;
+}
+
+.article blockquote {
+  font-style: italic;
+  padding: 0.6rem;
+  border-left: 4px solid #665f6c;
+}
