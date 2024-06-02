@@ -18,7 +18,11 @@ const postsSchema = z.object({
 
 export async function GET(request: NextRequest, { params: { slug } }: { params: { slug: string } }) {
   const siteId = env.SITE_ID
-  const wpPost = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/slug:${slug}`)
+  const wpPost = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/slug:${slug}`, {
+    next: {
+      revalidate: 60 // every 60 seconds
+    }
+  })
 
   if (wpPost.status >= 400) {
     return NextResponse.json({ error: 'post not found' }, { status: 404 })

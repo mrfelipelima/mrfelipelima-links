@@ -30,7 +30,11 @@ const postsListSchema = z.object({
 })
 export async function GET() {
   const siteId = env.SITE_ID
-  const data = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts`)
+  const data = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts`, {
+    next: {
+      revalidate: 60 // every 60 seconds
+    }
+  })
   const jsonData = await data.json()
 
   const posts = postsListSchema.parse(jsonData)
