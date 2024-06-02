@@ -1,8 +1,10 @@
 import CommentSession from '@/app/blog/components/comments';
 import { env } from '@/env';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/ui/breadcrumb';
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import { Home } from 'lucide-react';
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 import { z } from "zod";
@@ -81,6 +83,19 @@ export default async function PostPage({ params: { slug } }: { params: { slug: s
       <script dangerouslySetInnerHTML={{ __html: fbSDK }}></script>
       <main className="container mx-auto max-w-[900px] space-y-4 p-8">
         <div className="flex flex-col gap-4">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">
+                  <Home size={18} />
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href='/blog'>blog</BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
           <h1 className="text-5xl">{title}</h1>
           <time>{pubDate}</time>
         </div>
