@@ -1,3 +1,4 @@
+import { env } from '@/env'
 import * as cheerio from 'cheerio'
 import { NextResponse } from 'next/server'
 import { z } from "zod"
@@ -28,7 +29,7 @@ const postsListSchema = z.object({
   }))
 })
 export async function GET() {
-  const siteId = process.env.SITE_ID
+  const siteId = env.SITE_ID
   const data = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts`)
   const jsonData = await data.json()
 

@@ -1,4 +1,5 @@
 import CommentSession from '@/app/blog/components/comments';
+import { env } from '@/env';
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
@@ -31,8 +32,9 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const slug = params.slug
-  const fetchURL = process.env.VERCEL_URL || 'http://localhost:3000'
-  const post = await fetch(`https://${fetchURL}/api/v1/blog/${slug}`)
+  const protocol = (env.VERCEL_ENV === 'production' || env.VERCEL_ENV === 'preview') ? 'https' : 'http'
+  const fetchURL = env.NEXT_PUBLIC_VERCEL_URL || "localhost:3000";
+  const post = await fetch(`${protocol}://${fetchURL}/api/v1/blog/${slug}`)
 
   if (post.status >= 400) notFound()
 
@@ -46,7 +48,7 @@ export async function generateMetadata(
 const fbSDK = `
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : ${process.env.FB_APP_ID},
+    appId      : ${env.FB_APP_ID},
     xfbml      : true,
     version    : 'v20.0'
   });
@@ -65,8 +67,9 @@ window.fbAsyncInit = function() {
 export const revalidate = 900 // every 15 minutes
 
 export default async function PostPage({ params: { slug } }: { params: { slug: string} }) {
-  const fetchURL = process.env.VERCEL_URL || 'http://localhost:3000'
-  const post = await fetch(`https://${fetchURL}/api/v1/blog/${slug}`)
+  const protocol = (env.VERCEL_ENV === 'production' || env.VERCEL_ENV === 'preview') ? 'https' : 'http'
+  const fetchURL = env.NEXT_PUBLIC_VERCEL_URL || "localhost:3000";
+  const post = await fetch(`${protocol}://${fetchURL}/api/v1/blog/${slug}`)
   const response = await post.json()
   
   const { content, title, date } = postsSchema.parse(response)

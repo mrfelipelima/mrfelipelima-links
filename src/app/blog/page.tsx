@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,9 +7,11 @@ export const revalidate = 900; // every 15 minutes
 
 export default async function BlogPage() {
   try {
-    const fetchURL = process.env.VERCEL_URL || "http://localhost:3000";
-    const blogPosts = await fetch(`https://${fetchURL}/api/v1/blog`);
+    const protocol = (env.VERCEL_ENV === 'production' || env.VERCEL_ENV === 'preview') ? 'https' : 'http'
+    const fetchURL = env.NEXT_PUBLIC_VERCEL_URL || "localhost:3000";
+    const blogPosts = await fetch(`${protocol}://${fetchURL}/api/v1/blog`);
     const json = await blogPosts.json();
+
     return (
       <main className="my-4 flex flex-col items-center justify-center gap-4">
         <h1 className="text-5xl font-semibold">Blog</h1>
@@ -64,7 +67,7 @@ export default async function BlogPage() {
       </main>
     );
   } catch (error) {
-    console.log(error);
+    console.info(error)
     return (
       <main className="my-4 flex flex-col items-center justify-center gap-4">
         <h1 className="text-5xl font-semibold">Blog</h1>

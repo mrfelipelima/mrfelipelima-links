@@ -1295,6 +1295,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@t3-oss/env-core@npm:0.10.1":
+  version: 0.10.1
+  resolution: "@t3-oss/env-core@npm:0.10.1"
+  peerDependencies:
+    typescript: ">=5.0.0"
+    zod: ^3.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 0d86d0453b41dee2f3a84227682c3cd2baf2f5167bfb06893fa9d28b59688bb775fe472c45d3e10efd35962c73e21131bb1763a8b1294d10edb5c8506fb9940a
+  languageName: node
+  linkType: hard
+
+"@t3-oss/env-nextjs@npm:^0.10.1":
+  version: 0.10.1
+  resolution: "@t3-oss/env-nextjs@npm:0.10.1"
+  dependencies:
+    "@t3-oss/env-core": "npm:0.10.1"
+  peerDependencies:
+    typescript: ">=5.0.0"
+    zod: ^3.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 475f265c592121490fa29d3fb06af78013e17e9d4d989b0d6832c905db971e0d70c1f2947f127fc0c79a762c2ee3f2c9bf1fe44f71e2f16fb541ca2213910c92
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
@@ -4934,6 +4962,7 @@ __metadata:
     "@radix-ui/react-dialog": "npm:^1.0.5"
     "@radix-ui/react-slot": "npm:^1.0.2"
     "@rocketseat/eslint-config": "npm:1.2.0"
+    "@t3-oss/env-nextjs": "npm:^0.10.1"
     "@types/lodash": "npm:^4"
     "@types/node": "npm:18.11.7"
     "@types/react": "npm:^18.2.46"

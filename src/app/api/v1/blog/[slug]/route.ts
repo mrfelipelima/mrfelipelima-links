@@ -1,3 +1,4 @@
+import { env } from '@/env';
 import * as cheerio from 'cheerio';
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -16,7 +17,7 @@ const postsSchema = z.object({
 })
 
 export async function GET(request: NextRequest, { params: { slug } }: { params: { slug: string } }) {
-  const siteId = process.env.SITE_ID
+  const siteId = env.SITE_ID
   const wpPost = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/slug:${slug}`)
 
   if (wpPost.status >= 400) {

@@ -1,5 +1,6 @@
 'use client'
 
+import { env } from "@/env"
 import { DiscussionEmbed } from "disqus-react"
 
 type CommentSessionProps = {
@@ -11,7 +12,7 @@ type CommentSessionProps = {
 
 export default function CommentSession({ post }: CommentSessionProps) {
   const pageURL = typeof window !== 'undefined' ? window.location.href : ''
-  const disqsShortName = process.env.DISQS_SHORTNAME || ""
+  const disqsShortName = env.NEXT_PUBLIC_DISQS_SHORTNAME
   return (
     <DiscussionEmbed shortname={disqsShortName} config={{ url: pageURL, identifier: post.slug, title: post.title }} />
   )

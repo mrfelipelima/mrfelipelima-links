@@ -1,4 +1,5 @@
 import { MainMenu } from "@/components/MainMenu";
+import { env } from "@/env";
 import { cn } from "@/lib/cn";
 import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from "@vercel/analytics/react";
@@ -64,7 +65,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </div>
         </header>
           {children}
-        { process.env.NODE_ENV === 'production' && <GoogleTagManager gtmId={process.env.GTM_ID!} /> }
+        { env.VERCEL_ENV === 'production' && <GoogleTagManager gtmId={env.GTM_ID} /> }
         <Analytics />
       </body>
     </html>
