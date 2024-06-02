@@ -94,6 +94,10 @@ export default async function PostPage({ params: { slug } }: { params: { slug: s
               <BreadcrumbItem>
                 <BreadcrumbLink href='/blog'>blog</BreadcrumbLink>
               </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                {title}
+              </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
           <h1 className="text-5xl">{title}</h1>
