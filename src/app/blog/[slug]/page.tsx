@@ -32,7 +32,7 @@ export async function generateMetadata(
   // read route params
   const slug = params.slug
   const fetchURL = process.env.VERCEL_URL || 'http://localhost:3000'
-  const post = await fetch(`${fetchURL}/api/v1/blog/${slug}`)
+  const post = await fetch(`https://${fetchURL}/api/v1/blog/${slug}`)
 
   if (post.status >= 400) notFound()
 
@@ -66,7 +66,7 @@ export const revalidate = 900 // every 15 minutes
 
 export default async function PostPage({ params: { slug } }: { params: { slug: string} }) {
   const fetchURL = process.env.VERCEL_URL || 'http://localhost:3000'
-  const post = await fetch(`${fetchURL}/api/v1/blog/${slug}`)
+  const post = await fetch(`https://${fetchURL}/api/v1/blog/${slug}`)
   const response = await post.json()
   
   const { content, title, date } = postsSchema.parse(response)
