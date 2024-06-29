@@ -24,7 +24,7 @@ type PostPageProps = {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export async function requestPostData(slug: string) {
+async function requestPostData(slug: string) {
   const siteId = env.SITE_ID
   const postData = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/slug:${slug}`, {
     next: {
