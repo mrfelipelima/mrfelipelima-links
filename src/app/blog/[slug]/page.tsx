@@ -5,45 +5,77 @@ import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { Home } from 'lucide-react';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { z } from "zod";
 import styles from './styles.module.css';
 
 const postsSchema = z.object({
   ID: z.number(),
-  title: z.string(),
+  title: z.string().transform((title) => cheerio.load(title).text()),
+  excerpt: z.string().transform((excerpt) => cheerio.load(excerpt).text()),
   content: z.string(),
+  featured_image: z.string(),
   date: z.coerce.date(),
-}).transform((data) => {
-  const title = cheerio.load(data.title).text()
-  return {
-    ...data,
-    title,
-  }
 })
 
-type Props = {
+type PostPageProps = {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
+
+export async function requestPostData(slug: string) {
+  const siteId = env.SITE_ID
+  const postData = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/slug:${slug}`, {
+    next: {
+      revalidate: 60 // every 60 seconds
+    }
+  })
+
+  if(postData.status >= 400) {
+    return null
+  }
+
+  const response = await postData.json()
+  
+  const parse = postsSchema.parse(response)
+
+  return parse
+}
  
 export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+  { params }: PostPageProps
+): Promise<Metadata | undefined> {
   // read route params
-  const slug = params.slug
-  const protocol = (env.VERCEL_ENV === 'production' || env.VERCEL_ENV === 'preview') ? 'https' : 'http'
-  const fetchURL = env.NEXT_PUBLIC_VERCEL_URL || "localhost:3000";
-  const post = await fetch(`${protocol}://${fetchURL}/api/v1/blog/${slug}`)
+  const postData = await requestPostData(params.slug)
 
-  if (post.status >= 400) notFound()
+  if (!postData) return
 
-  const response = await post.json()
+  const { title, date, excerpt: description, featured_image } = postData
+
+  let ogImage = featured_image || `https://www.felipelima.net/og?${title}`
  
   return {
-    title: response.title,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      publishedTime: date.toISOString(),
+      url: `https://www.felipelima.net/blog/${params.slug}`,
+      images: [
+        {
+          url: ogImage,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
+    }
   }
 }
 
@@ -68,13 +100,12 @@ window.fbAsyncInit = function() {
 
 export const revalidate = 900 // every 15 minutes
 
-export default async function PostPage({ params: { slug } }: { params: { slug: string} }) {
-  const protocol = (env.VERCEL_ENV === 'production' || env.VERCEL_ENV === 'preview') ? 'https' : 'http'
-  const fetchURL = env.NEXT_PUBLIC_VERCEL_URL || "localhost:3000";
-  const post = await fetch(`${protocol}://${fetchURL}/api/v1/blog/${slug}`)
-  const response = await post.json()
-  
-  const { content, title, date } = postsSchema.parse(response)
+export default async function PostPage({ params: { slug } }: PostPageProps) {
+  const postData = await requestPostData(slug)
+
+  if (!postData) return notFound()
+
+  const { title, date, content } = postData
 
   const pubDate = dayjs(date).locale('pt-br').format('DD [de] MMMM [de] YYYY')
 
@@ -100,8 +131,8 @@ export default async function PostPage({ params: { slug } }: { params: { slug: s
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <h1 className="text-5xl">{title}</h1>
-          <time>{pubDate}</time>
+          <h1 className="text-5xl text-framboesa-500 font-semibold">{title}</h1>
+          <time className="text-sm dark:text-framboesa-100 text-framboesa-800">{pubDate}</time>
         </div>
         <article className={styles.article} dangerouslySetInnerHTML={{ __html: content }}></article>
         <CommentSession post={{ slug, title }} />
