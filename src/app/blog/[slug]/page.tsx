@@ -51,16 +51,17 @@ export async function generateMetadata(
 
   if (!postData) return
 
-  const { title, date, excerpt: description, featured_image } = postData
+  const { title, date, excerpt, featured_image } = postData
 
   let ogImage = featured_image || `https://www.felipelima.net/og?title=${title}`
  
   return {
     title,
-    description,
+    description: excerpt,
     openGraph: {
       title,
-      description,
+      description: excerpt,
+      siteName: 'Felipe Lima',
       type: 'article',
       publishedTime: date.toISOString(),
       url: `https://www.felipelima.net/blog/${params.slug}`,
@@ -73,7 +74,7 @@ export async function generateMetadata(
     twitter: {
       card: 'summary_large_image',
       title,
-      description,
+      description: excerpt,
       images: [ogImage],
     }
   }
