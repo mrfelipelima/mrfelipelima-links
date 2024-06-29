@@ -53,7 +53,7 @@ export async function generateMetadata(
 
   const { title, date, excerpt: description, featured_image } = postData
 
-  let ogImage = featured_image || `https://www.felipelima.net/og?${title}`
+  let ogImage = featured_image || `https://www.felipelima.net/og?title=${title}`
  
   return {
     title,
