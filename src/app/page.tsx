@@ -1,12 +1,12 @@
-import Image from "next/image";
-import { Person, WithContext } from "schema-dts";
-import { z } from "zod";
+import Image from 'next/image'
+import { Person, WithContext } from 'schema-dts'
+import { z } from 'zod'
 
-import { SocialIcons } from "@/components/SocialIcons";
+import { SocialIcons } from '@/components/SocialIcons'
 
-import LinkButton from "@/components/LinkButton";
-import { db } from "@/lib/firebase";
-import felipeLima from "@/public/assets/felipe.jpg";
+import LinkButton from '@/components/LinkButton'
+import { db } from '@/lib/firebase'
+import felipeLima from '@/public/assets/felipe.jpg'
 import {
   collection,
   doc,
@@ -14,54 +14,58 @@ import {
   getDocs,
   query,
   where,
-} from "firebase/firestore";
+} from 'firebase/firestore'
 
 const person: WithContext<Person> = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Felipe Lima",
-  email: "mrfelipelima@gmail.com",
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Felipe Lima',
+  email: 'mrfelipelima@gmail.com',
   image:
-    "https://firebasestorage.googleapis.com/v0/b/mrfelipelima-409ed.appspot.com/o/public%2Fimg%2F119681655_3876762852339046_5736681282524451695_n%20(1).jpg?alt=media",
-  jobTitle: "Web engineer",
-  url: "https://www.felipelima.net/",
-};
+    'https://firebasestorage.googleapis.com/v0/b/mrfelipelima-409ed.appspot.com/o/public%2Fimg%2F119681655_3876762852339046_5736681282524451695_n%20(1).jpg?alt=media',
+  jobTitle: 'Web engineer',
+  url: 'https://www.felipelima.net/',
+}
 
 const profileSchema = z.object({
   name: z.string(),
   tagline: z.string(),
   about: z.string(),
-});
+})
 
 const linksSchema = z.array(
   z.object({
     id: z.string(),
     title: z.string(),
     position: z.number().default(0),
-    description: z.string().default(""),
-  })
-);
+    description: z.string().default(''),
+  }),
+)
 
-export const revalidate = 60;
+export const revalidate = 60
 
 export default async function HomePage() {
-  const docRef = doc(db, "configurations", "profile");
-  const docSnapshot = await getDoc(docRef);
+  const docRef = doc(db, 'configurations', 'profile')
+  const docSnapshot = await getDoc(docRef)
 
-  const { name, tagline, about } = profileSchema.parse(docSnapshot.data());
+  const { name, tagline, about } = profileSchema.parse(docSnapshot.data())
 
   const linksRef = query(
-    collection(db, "links"),
-    where("visibility", "==", true)
-  );
-  const linksSnapshot = await getDocs(linksRef);
+    collection(db, 'links'),
+    where('visibility', '==', true),
+  )
+  const linksSnapshot = await getDocs(linksRef)
 
-  const links = linksSchema.parse(Array.from(linksSnapshot.docs.map((doc) => {
-    return {
-      id: doc.id,
-      ...doc.data()
-    }
-  })))
+  const links = linksSchema.parse(
+    Array.from(
+      linksSnapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        }
+      }),
+    ),
+  )
 
   return (
     <>
@@ -87,13 +91,14 @@ export default async function HomePage() {
           <span className="text-xl">{tagline}</span>
           <span className="text-center text-base">{about}</span>
         </div>
-        <div className="w-full flex flex-col items-center justify-center gap-6 md:w-1/2">
+        {/* <LastPost /> */}
+        <div className="flex w-full flex-col items-center justify-center gap-6 md:w-1/2">
           <nav className="w-full">
             <ul className="flex w-full flex-col items-center gap-4">
               {links.map((link) => {
                 return (
                   <LinkButton key={link.id} title={link.title} id={link.id} />
-                );
+                )
               })}
             </ul>
           </nav>
@@ -101,5 +106,5 @@ export default async function HomePage() {
         <SocialIcons />
       </div>
     </>
-  );
+  )
 }
