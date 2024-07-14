@@ -1,16 +1,16 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 interface LinkPutonProps {
-  id: string,
-  title: string,
+  id: string
+  title: string
 }
 
 export default function LinkButton({ id, title }: LinkPutonProps) {
   return (
-    <li className="w-full rounded-xl h-16">
+    <li className="h-16 w-full rounded-xl">
       <Link
         href={`/api/v1/link/${id}`}
-        className="w-full bg-framboesa-500 text-framboesa-50 rounded-xl h-16 text-base flex items-center justify-center px-3 hover:bg-framboesa-700 transition-colors"
+        className="flex h-16 w-full items-center justify-center rounded-xl bg-framboesa-500 px-3 text-base text-framboesa-50 transition-colors hover:bg-framboesa-700"
       >
         {title}
       </Link>

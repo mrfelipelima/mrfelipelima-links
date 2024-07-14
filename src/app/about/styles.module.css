@@ -11,6 +11,10 @@
   margin-top: 1rem;
 }
 
+.article ul {
+  margin: 0.5rem 0;
+}
+
 .article a {
   text-decoration-line: underline;
   text-underline-offset: 2px;

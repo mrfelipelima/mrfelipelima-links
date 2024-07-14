@@ -15,19 +15,28 @@ export function SocialIcons() {
         </li>
         <li>
           <a title="Twitter" href="https://twitter.com/mrfelipelima">
-            <Twitter size={24} className="duration-300 hover:text-framboesa-800" />
+            <Twitter
+              size={24}
+              className="duration-300 hover:text-framboesa-800"
+            />
             <p className="sr-only">Twitter</p>
           </a>
         </li>
         <li>
           <a title="Instagram" href="https://instagram.com/mrfelipelima">
-            <Instagram size={24} className="duration-300 hover:text-framboesa-800" />
+            <Instagram
+              size={24}
+              className="duration-300 hover:text-framboesa-800"
+            />
             <p className="sr-only">Instagram</p>
           </a>
         </li>
         <li>
           <a title="LinkedIn" href="https://www.linkedin.com/in/mrfelipelima">
-            <Linkedin size={24} className="duration-300 hover:text-framboesa-800" />
+            <Linkedin
+              size={24}
+              className="duration-300 hover:text-framboesa-800"
+            />
             <p className="sr-only">Linkedin</p>
           </a>
         </li>

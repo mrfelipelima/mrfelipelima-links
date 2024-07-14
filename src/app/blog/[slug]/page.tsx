@@ -1,14 +1,21 @@
-import CommentSession from '@/app/blog/components/comments';
-import { env } from '@/env';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/ui/breadcrumb';
-import * as cheerio from 'cheerio';
-import dayjs from 'dayjs';
-import 'dayjs/locale/pt-br';
-import { Home } from 'lucide-react';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { z } from "zod";
-import styles from './styles.module.css';
+import CommentSession from '@/app/blog/components/comments'
+import { env } from '@/env'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/ui/breadcrumb'
+import * as cheerio from 'cheerio'
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
+import { Home } from 'lucide-react'
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import Script from 'next/script'
+import { z } from 'zod'
+import styles from './styles.module.css'
 
 const postsSchema = z.object({
   ID: z.number(),
@@ -26,26 +33,29 @@ type PostPageProps = {
 
 async function requestPostData(slug: string) {
   const siteId = env.SITE_ID
-  const postData = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/slug:${slug}`, {
-    next: {
-      revalidate: 60 // every 60 seconds
-    }
-  })
+  const postData = await fetch(
+    `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/slug:${slug}`,
+    {
+      next: {
+        revalidate: 60, // every 60 seconds
+      },
+    },
+  )
 
-  if(postData.status >= 400) {
+  if (postData.status >= 400) {
     return null
   }
 
   const response = await postData.json()
-  
+
   const parse = postsSchema.parse(response)
 
   return parse
 }
- 
-export async function generateMetadata(
-  { params }: PostPageProps
-): Promise<Metadata | undefined> {
+
+export async function generateMetadata({
+  params,
+}: PostPageProps): Promise<Metadata | undefined> {
   // read route params
   const postData = await requestPostData(params.slug)
 
@@ -53,8 +63,9 @@ export async function generateMetadata(
 
   const { title, date, excerpt, featured_image } = postData
 
-  let ogImage = featured_image || `https://www.felipelima.net/og?title=${title}`
- 
+  const ogImage =
+    featured_image || `https://www.felipelima.net/og?title=${title}`
+
   return {
     title,
     description: excerpt,
@@ -76,7 +87,7 @@ export async function generateMetadata(
       title,
       description: excerpt,
       images: [ogImage],
-    }
+    },
   }
 }
 
@@ -99,7 +110,7 @@ window.fbAsyncInit = function() {
  }(document, 'script', 'facebook-jssdk'));
 `
 
-export const revalidate = 900 // every 15 minutes
+export const revalidate = 120 // every 2 minutes
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {
   const postData = await requestPostData(slug)
@@ -112,7 +123,11 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
 
   return (
     <>
-      <script dangerouslySetInnerHTML={{ __html: fbSDK }}></script>
+      <Script
+        id="fbSDK"
+        dangerouslySetInnerHTML={{ __html: fbSDK }}
+        strategy="beforeInteractive"
+      ></Script>
       <main className="container mx-auto max-w-[900px] space-y-4 p-8">
         <div className="flex flex-col gap-4">
           <Breadcrumb>
@@ -124,18 +139,21 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href='/blog'>blog</BreadcrumbLink>
+                <BreadcrumbLink href="/blog">blog</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                {title}
-              </BreadcrumbItem>
+              <BreadcrumbItem>{title}</BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <h1 className="text-5xl text-framboesa-500 font-semibold">{title}</h1>
-          <time className="text-sm dark:text-framboesa-100 text-framboesa-800">{pubDate}</time>
+          <h1 className="text-5xl font-semibold text-framboesa-500">{title}</h1>
+          <time className="text-sm text-framboesa-800 dark:text-framboesa-100">
+            {pubDate}
+          </time>
         </div>
-        <article className={styles.article} dangerouslySetInnerHTML={{ __html: content }}></article>
+        <article
+          className={styles.article}
+          dangerouslySetInnerHTML={{ __html: content }}
+        ></article>
         <CommentSession post={{ slug, title }} />
       </main>
     </>
