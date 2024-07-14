@@ -4,7 +4,6 @@ import { z } from 'zod'
 
 import { SocialIcons } from '@/components/SocialIcons'
 
-import { LastPost } from '@/components/LastPost'
 import LinkButton from '@/components/LinkButton'
 import { db } from '@/lib/firebase'
 import felipeLima from '@/public/assets/felipe.jpg'

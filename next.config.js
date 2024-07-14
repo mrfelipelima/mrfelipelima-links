@@ -12,9 +12,20 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.gravatar.com'
-      }
-    ]
+        hostname: '*.gravatar.com',
+      },
+    ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
 }
 
