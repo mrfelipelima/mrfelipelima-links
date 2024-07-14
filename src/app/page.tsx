@@ -92,7 +92,7 @@ export default async function HomePage() {
           <span className="text-xl">{tagline}</span>
           <span className="text-center text-base">{about}</span>
         </div>
-        <LastPost />
+        {/* <LastPost /> */}
         <div className="flex w-full flex-col items-center justify-center gap-6 md:w-1/2">
           <nav className="w-full">
             <ul className="flex w-full flex-col items-center gap-4">
