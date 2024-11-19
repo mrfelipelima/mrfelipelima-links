@@ -41,7 +41,7 @@ export function SocialIcons() {
           </a>
         </li>
         <li>
-          <a title="Email" href="mailto:eu@felipelima.net">
+          <a title="Email" href="mailto:mrfelipelima@gmail.com">
             <Mail size={24} className="duration-300 hover:text-framboesa-800" />
             <p className="sr-only">E-mail</p>
           </a>

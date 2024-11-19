@@ -50,7 +50,7 @@ I create this project in a alternative to linktr.ee platform. With my own link l
 
 ## :sparkles: Hey! ##
 
-This repository has a [special post on my blog](https://www.felipelima.net/blog/fiz-meu-proprio-linktr-ee), where a write how was the process for creation of this app.
+This repository has a [special post on my blog](https://www.felipelima.site/blog/fiz-meu-proprio-linktr-ee), where a write how was the process for creation of this app.
 
 ## :rocket: Technologies ##
 

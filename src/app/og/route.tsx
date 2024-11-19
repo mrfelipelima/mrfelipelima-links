@@ -1,3 +1,4 @@
+import { urlHandler } from '@/lib/url-handler'
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
 
@@ -21,7 +22,7 @@ export async function GET(req: NextRequest) {
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          backgroundImage: 'url(https://www.felipelima.net/og-bg.png)',
+          backgroundImage: `url(${urlHandler()}/og-bg.png)`,
         }}
       >
         <div

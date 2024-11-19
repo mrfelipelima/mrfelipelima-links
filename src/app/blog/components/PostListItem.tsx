@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs from '@/lib/dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PostItemListType } from '../typeHelpers'

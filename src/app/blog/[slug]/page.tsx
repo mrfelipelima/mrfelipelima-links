@@ -1,5 +1,7 @@
 import CommentSession from '@/app/blog/components/comments'
-import { env } from '@/env'
+import dayjs from '@/lib/dayjs'
+import { urlHandler } from '@/lib/url-handler'
+import { getPost } from '@/lib/wordpressAPI'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,64 +9,27 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/ui/breadcrumb'
-import * as cheerio from 'cheerio'
-import dayjs from 'dayjs'
-import 'dayjs/locale/pt-br'
 import { Home } from 'lucide-react'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Script from 'next/script'
-import { z } from 'zod'
 import styles from './styles.module.css'
-
-const postsSchema = z.object({
-  ID: z.number(),
-  title: z.string().transform((title) => cheerio.load(title).text()),
-  excerpt: z.string().transform((excerpt) => cheerio.load(excerpt).text()),
-  content: z.string(),
-  featured_image: z.string(),
-  date: z.coerce.date(),
-})
 
 type PostPageProps = {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-async function requestPostData(slug: string) {
-  const siteId = env.SITE_ID
-  const postData = await fetch(
-    `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/slug:${slug}`,
-    {
-      next: {
-        revalidate: 60, // every 60 seconds
-      },
-    },
-  )
-
-  if (postData.status >= 400) {
-    return null
-  }
-
-  const response = await postData.json()
-
-  const parse = postsSchema.parse(response)
-
-  return parse
-}
-
 export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata | undefined> {
   // read route params
-  const postData = await requestPostData(params.slug)
+  const { post } = await getPost(params.slug)
 
-  if (!postData) return
+  if (!post) return
 
-  const { title, date, excerpt, featured_image } = postData
+  const { title, date, excerpt, featured_image } = post
 
-  const ogImage =
-    featured_image || `https://www.felipelima.net/og?title=${title}`
+  const ogImage = featured_image || `${urlHandler()}/og?title=${title}`
 
   return {
     title,
@@ -75,7 +40,7 @@ export async function generateMetadata({
       siteName: 'Felipe Lima',
       type: 'article',
       publishedTime: date.toISOString(),
-      url: `https://www.felipelima.net/blog/${params.slug}`,
+      url: `${urlHandler()}/blog/${params.slug}`,
       images: [
         {
           url: ogImage,
@@ -91,43 +56,17 @@ export async function generateMetadata({
   }
 }
 
-const fbSDK = `
-window.fbAsyncInit = function() {
-  FB.init({
-    appId      : ${env.FB_APP_ID},
-    xfbml      : true,
-    version    : 'v20.0'
-  });
-  FB.AppEvents.logPageView();
-};
-
-(function(d, s, id){
-   var js, fjs = d.getElementsByTagName(s)[0];
-   if (d.getElementById(id)) {return;}
-   js = d.createElement(s); js.id = id;
-   js.src = "https://connect.facebook.net/pt_BR/sdk.js";
-   fjs.parentNode.insertBefore(js, fjs);
- }(document, 'script', 'facebook-jssdk'));
-`
-
 export const revalidate = 120 // every 2 minutes
 
 export default async function PostPage({ params: { slug } }: PostPageProps) {
-  const postData = await requestPostData(slug)
+  const { post } = await getPost(slug)
+  if (!post) return notFound()
 
-  if (!postData) return notFound()
-
-  const { title, date, content } = postData
-
-  const pubDate = dayjs(date).locale('pt-br').format('DD [de] MMMM [de] YYYY')
+  const { title, date, content } = post
+  const pubDate = dayjs(date).format('DD [de] MMMM [de] YYYY')
 
   return (
     <>
-      <Script
-        id="fbSDK"
-        dangerouslySetInnerHTML={{ __html: fbSDK }}
-        strategy="beforeInteractive"
-      ></Script>
       <main className="container mx-auto max-w-[900px] space-y-4 p-8">
         <div className="flex flex-col gap-4">
           <Breadcrumb>
@@ -153,7 +92,7 @@ export default async function PostPage({ params: { slug } }: PostPageProps) {
         <article
           className={styles.article}
           dangerouslySetInnerHTML={{ __html: content }}
-        ></article>
+        />
         <CommentSession post={{ slug, title }} />
       </main>
     </>
