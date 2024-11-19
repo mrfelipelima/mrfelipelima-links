@@ -1,10 +1,12 @@
 import { MainMenu } from '@/components/MainMenu'
 import { env } from '@/env'
 import { cn } from '@/lib/cn'
+import { urlHandler } from '@/lib/url-handler'
 import { GoogleTagManager } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
 import { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
+import Script from 'next/script'
 import { ReactNode } from 'react'
 import './globals.css'
 
@@ -15,7 +17,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.felipelima.net'),
+  metadataBase: new URL(urlHandler()),
   title: {
     default: 'Felipe Lima',
     template: '%s | Felipe Lima',
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
     title: 'Felipe Lima',
     description:
       'Felipe Lima é engenheiro web com habilidades de backend e frontend e nessa página apresenta os principais links para acompanhar seus trabalhos.',
-    url: 'https://www.felipelima.net',
+    url: `${urlHandler()}`,
     siteName: 'Felipe Lima',
     locale: 'pt_BR',
     type: 'website',
@@ -48,6 +50,25 @@ export const metadata: Metadata = {
   },
 }
 
+const fbSDK = `
+window.fbAsyncInit = function() {
+  FB.init({
+    appId      : ${env.FB_APP_ID},
+    xfbml      : true,
+    version    : 'v20.0'
+  });
+  FB.AppEvents.logPageView();
+};
+
+(function(d, s, id){
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement(s); js.id = id;
+   js.src = "https://connect.facebook.net/pt_BR/sdk.js";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));
+`
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-br">
@@ -67,6 +88,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <GoogleTagManager gtmId={env.GTM_ID} />
         )}
         <Analytics />
+        <Script
+          id="fbSDK"
+          dangerouslySetInnerHTML={{ __html: fbSDK }}
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   )
