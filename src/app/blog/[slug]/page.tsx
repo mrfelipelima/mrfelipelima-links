@@ -29,7 +29,9 @@ export async function generateMetadata({
 
   const { title, date, excerpt, featured_image } = post
 
-  const ogImage = featured_image || `${urlHandler()}/og?title=${title}`
+  const urlfyPostTitle = encodeURIComponent(title)
+
+  const ogImage = featured_image || `${urlHandler()}/og?title=${urlfyPostTitle}`
 
   return {
     title,
