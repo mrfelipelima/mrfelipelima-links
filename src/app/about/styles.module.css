@@ -11,10 +11,6 @@
   margin-top: 1rem;
 }
 
-.article ul {
-  margin: 0.5rem 0;
-}
-
 .article a {
   text-decoration-line: underline;
   text-underline-offset: 2px;
@@ -97,6 +93,17 @@
 .article ul {
   list-style-type: disc;
   text-align: left;
+  list-style-position: inside;
+}
+
+.article ol {
+  list-style-type: decimal;
+  margin: 1.5rem 0;
+  list-style-position: inside;
+}
+
+.article li + li {
+  margin-top: 0.5rem;
 }
 
 .article table {
@@ -112,4 +119,5 @@
   font-style: italic;
   padding: 0.6rem;
   border-left: 4px solid #665f6c;
+  margin: 1.5rem 0;
 }
